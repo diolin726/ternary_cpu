@@ -14,26 +14,27 @@ This project implements a ternary CPU using Verilog gate-level design. Unlike tr
 
 There are three different approaches for mapping ternary voltage levels to binary representation in Verilog simulation:
 
-### 1. Type 0: Binary Simulation Mode (Simple Approach)
-- **Encoding**: `{input_bit, 1'b0}` - concatenates input bit with zero
-- Uses 2-bit representation where the MSB carries the binary value
-- **Mapping**: Binary 1 → `2'b10` (p, represents +1), Binary 0 → `2'b00` (n, represents -1)
-- **Status**: ✅ Currently implemented in most places
-- This is the simplest approach and is used for Verilog simulation purposes only
+### 1. Type 0: Binary Simulation Mode (Currently Implemented)
+- **Encoding**: `{input_bit, 1'b0}` - concatenates single-bit binary input with zero
+- **Result**: Binary 1 → `2'b10` (p = +1), Binary 0 → `2'b00` (n = -1)
+- **Status**: ✅ Currently used throughout the codebase
+- **Note**: This simulates ternary using binary values. It doesn't represent true ternary voltage levels, but allows Verilog simulation to work with 2-bit representations of ternary states.
 
-### 2. Type 1: Positive-Zero Mapping (Planned)
-- **Intended Mapping**: Binary 1 → Ternary +, Binary 0 → Ternary 0
-- Uses `isp` module in the implementation
-- **Status**: ⏳ Infrastructure exists but not consistently used throughout the design
+### 2. Type 1: Positive-Zero Voltage Mapping (Planned)
+- **Intended Use**: For actual ternary hardware with voltage levels
+- **Mapping**: Binary 1 → Ternary + voltage, Binary 0 → Ternary 0 voltage
+- **Implementation**: Would use `isp` module for conversion
+- **Status**: ⏳ Module infrastructure exists (`bit_to_tit_force` with `is_ter_make=1`) but not deployed
 
-### 3. Type 2: Positive-Negative Mapping (Planned)
-- **Intended Mapping**: Binary 1 → Ternary +, Binary 0 → Ternary -
-- Direct pass-through assignment in the implementation
-- **Status**: ⏳ Infrastructure exists but not consistently used throughout the design
+### 3. Type 2: Positive-Negative Voltage Mapping (Planned)
+- **Intended Use**: For actual ternary hardware with voltage levels  
+- **Mapping**: Binary 1 → Ternary + voltage, Binary 0 → Ternary - voltage
+- **Implementation**: Would use direct assignment for conversion
+- **Status**: ⏳ Module infrastructure exists (`bit_to_tit_force` with `is_ter_make=2`) but not deployed
 
 ### Current Situation
 
-Due to time constraints, **Type 0** (the simplest simulation approach) is currently used in most parts of the codebase. The other two approaches, which would allow for proper voltage-level ternary representation, are planned for future implementation.
+Due to time constraints, **Type 0** (the binary simulation approach) is currently used throughout the codebase. Types 1 and 2 would be needed for interfacing with actual ternary voltage-level hardware, where different voltage ranges represent ternary states. The infrastructure for these types exists in the `bit_to_tit_force` module but is not currently utilized. Future work will implement these to support real ternary hardware implementations.
 
 ## Architecture
 
