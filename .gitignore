@@ -1,3 +1,10 @@
 obj_dir/
 *.sh
 *.swp
+# Ignore large verilator build binary
+simv
+# Ignore common build dirs
+obj/
+build/
+dist/
+*.out
