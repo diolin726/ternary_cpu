@@ -15,20 +15,21 @@ This project implements a ternary CPU using Verilog gate-level design. Unlike tr
 There are three different approaches for mapping ternary voltage levels to binary representation in Verilog simulation:
 
 ### 1. Type 0: Binary Simulation Mode (Simple Approach)
-- **Encoding**: `{bit, 1'b0}`
-- Uses 2-bit representation where the first bit represents the value
+- **Encoding**: `{input_bit, 1'b0}` - concatenates input bit with zero
+- Uses 2-bit representation where the MSB carries the binary value
 - **Status**: ✅ Currently implemented in most places
 - This is the simplest approach and is used for Verilog simulation purposes only
+- Example: binary 1 → `2'b10` (represents +), binary 0 → `2'b00` (represents -/0)
 
 ### 2. Type 1: Positive-Zero Mapping
 - **Encoding**: Binary 1, 0 maps to Ternary +, 0
-- Uses custom ISP (Inverted Symmetric Positive) logic
-- **Status**: ⏳ Planned but not fully implemented
+- Uses `isp` module: if input is + (p) output +, otherwise output 0 (o)
+- **Status**: ⏳ Partially implemented but not used throughout the design
 
 ### 3. Type 2: Positive-Negative Mapping  
-- **Encoding**: Binary 1, 0 maps to Ternary +, -
-- Direct binary-to-ternary mapping
-- **Status**: ⏳ Planned but not fully implemented
+- **Encoding**: Direct pass-through assignment
+- Relies on the assumption that binary representation directly maps to ternary states
+- **Status**: ⏳ Partially implemented but not used throughout the design
 
 ### Current Situation
 
@@ -49,7 +50,9 @@ The CPU follows a classic pipeline architecture with the following stages:
 ### Ternary Logic Gates
 - `terand`: Ternary AND gate
 - `teror`: Ternary OR gate
-- `ternot`: Ternary NOT gate
+- `onot`, `pnot`, `nnot`: Ternary NOT variants (balanced NOT gates)
+- `ternand`, `ternor`: Ternary NAND and NOR gates
+- `ternmul`: Ternary multiplication
 - Additional ternary operators based on [ternary logic principles](https://louis-dr.github.io/ternlogic.html)
 
 ### Arithmetic Units
