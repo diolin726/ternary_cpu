@@ -17,19 +17,19 @@ There are three different approaches for mapping ternary voltage levels to binar
 ### 1. Type 0: Binary Simulation Mode (Simple Approach)
 - **Encoding**: `{input_bit, 1'b0}` - concatenates input bit with zero
 - Uses 2-bit representation where the MSB carries the binary value
+- **Mapping**: Binary 1 → `2'b10` (p, represents +1), Binary 0 → `2'b00` (n, represents -1)
 - **Status**: ✅ Currently implemented in most places
 - This is the simplest approach and is used for Verilog simulation purposes only
-- Example: binary 1 → `2'b10` (represents +), binary 0 → `2'b00` (represents -/0)
 
-### 2. Type 1: Positive-Zero Mapping
-- **Encoding**: Binary 1, 0 maps to Ternary +, 0
-- Uses `isp` module: if input is + (p) output +, otherwise output 0 (o)
-- **Status**: ⏳ Partially implemented but not used throughout the design
+### 2. Type 1: Positive-Zero Mapping (Planned)
+- **Intended Mapping**: Binary 1 → Ternary +, Binary 0 → Ternary 0
+- Uses `isp` module in the implementation
+- **Status**: ⏳ Infrastructure exists but not consistently used throughout the design
 
-### 3. Type 2: Positive-Negative Mapping  
-- **Encoding**: Direct pass-through assignment
-- Relies on the assumption that binary representation directly maps to ternary states
-- **Status**: ⏳ Partially implemented but not used throughout the design
+### 3. Type 2: Positive-Negative Mapping (Planned)
+- **Intended Mapping**: Binary 1 → Ternary +, Binary 0 → Ternary -
+- Direct pass-through assignment in the implementation
+- **Status**: ⏳ Infrastructure exists but not consistently used throughout the design
 
 ### Current Situation
 
@@ -70,9 +70,9 @@ The CPU follows a classic pipeline architecture with the following stages:
 ## Ternary Number System
 
 This implementation uses **balanced ternary** representation where:
-- `p = 2'b10` represents +1
-- `o = 2'b01` represents 0
-- `n = 2'b00` represents -1
+- `n = 2'b00` represents -1 (negative)
+- `o = 2'b01` represents 0 (zero)
+- `p = 2'b10` represents +1 (positive)
 
 In balanced ternary, numbers are represented as sums of powers of 3 with coefficients of -1, 0, or +1.
 
